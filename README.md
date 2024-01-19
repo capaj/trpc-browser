@@ -14,12 +14,15 @@
 - Easy communication for web extensions.
 - Typesafe messaging between content & background scripts.
 - Ready for Manifest V3.
-
+- forked because of lack of maintenance on the original repo
+  
 ## Usage
 
 **1. Install `trpc-chrome`.**
 
 ```bash
+# pnpm
+pnpm add trpc-chrome
 # npm
 npm install trpc-chrome
 # yarn
@@ -103,6 +106,9 @@ Please see [full typings here](src/adapter/index.ts).
 
 Distributed under the MIT License. See LICENSE for more information.
 
-## Contact
 
-James Berry - Follow me on Twitter [@jlalmes](https://twitter.com/jlalmes) 💙
+## Used by:
+
+Projects which used this package(add your own if you use this):
+
+ - https://github.com/authier-pm/authier
