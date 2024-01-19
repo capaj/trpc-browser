@@ -3,11 +3,7 @@
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#1a73e8",
-    "titleBar.inactiveBackground": "#5a98e9"
+    "source.fixAll.eslint": "explicit"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
