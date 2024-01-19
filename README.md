@@ -43,11 +43,11 @@
 
 ```bash
 # pnpm
-pnpm add trpc-chrome
+pnpm add @capaj/trpc-browser
 # npm
-npm install trpc-browser
+npm install @capaj/trpc-browser
 # yarn
-yarn add trpc-browser
+yarn add @capaj/trpc-browser
 ```
 
 ## 🧩 Example usage for extensions
