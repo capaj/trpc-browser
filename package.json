@@ -4,27 +4,39 @@
   "description": "tRPC adapter for Web Extensions",
   "authors": [
     "Jiri Spac <capajj@gmail.com>",
-    "James Berry <jb@jamesbe.com>"
+    "James Berry <jb@jamesbe.com>",
+    "Janek Rahrt <janek.rahrt@me.com>"
   ],
   "private": false,
   "license": "MIT",
+  "files": [
+    "types",
+    "adapter",
+    "link",
+    "relay",
+    "shared"
+  ],
   "keywords": [
     "trpc",
     "chrome",
     "extension",
     "webext",
-    "webextension"
+    "webextension",
+    "web",
+    "iframe",
+    "popup",
+    "browser"
   ],
-  "homepage": "https://github.com/jlalmes/trpc-chrome",
-  "repository": "github:jlalmes/trpc-chrome",
-  "bugs": "https://github.com/jlalmes/trpc-chrome/issues",
+  "homepage": "https://github.com/janek26/trpc-browser",
+  "repository": "github:janek26/trpc-browser",
+  "bugs": "https://github.com/janek26/trpc-browser/issues",
   "workspaces": [
     ".",
     "examples/with-plasmo"
   ],
   "scripts": {
     "test": "tsc --noEmit && jest --verbose",
-    "build": "rimraf dist && rimraf adapter && rimraf link && rimraf types && tsc -p tsconfig.build.json && mv dist/* . && rimraf dist"
+    "build": "rimraf dist && rimraf adapter && rimraf link && rimraf types && rimraf relay && rimraf shared && tsc -p tsconfig.build.json && mv dist/* . && rimraf dist"
   },
   "peerDependencies": {
     "@trpc/client": "^10",

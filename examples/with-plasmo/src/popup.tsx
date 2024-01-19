@@ -1,7 +1,7 @@
 import { createTRPCProxyClient } from '@trpc/client';
 import { useRef, useState } from 'react';
-import { chromeLink } from 'trpc-chrome/link';
 
+import { chromeLink } from '../../../link';
 import type { AppRouter } from './background';
 
 const port = chrome.runtime.connect();
@@ -30,6 +30,9 @@ function Popup() {
         flexDirection: 'column',
         padding: 16,
         gap: 8,
+
+        width: 420,
+        height: 600,
       }}
     >
       <h2>Extension using tRPC & Plasmo</h2>
