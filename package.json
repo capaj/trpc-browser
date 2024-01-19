@@ -27,9 +27,9 @@
     "popup",
     "browser"
   ],
-  "homepage": "https://github.com/janek26/trpc-browser",
-  "repository": "github:janek26/trpc-browser",
-  "bugs": "https://github.com/janek26/trpc-browser/issues",
+  "homepage": "https://github.com/capaj/trpc-browser",
+  "repository": "github:capaj/trpc-browser",
+  "bugs": "https://github.com/capaj/trpc-browser/issues",
   "workspaces": [
     ".",
     "examples/with-plasmo"
