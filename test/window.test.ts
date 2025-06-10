@@ -1,9 +1,9 @@
 import { getMockWindow } from './__setup';
 
-import { TRPCLink, createTRPCProxyClient } from '@trpc/client';
-import { AnyRouter, initTRPC } from '@trpc/server';
+import { TRPCLink, createTRPCClient } from '@trpc/client';
+import { AnyTRPCRouter, initTRPC } from '@trpc/server';
 import { Unsubscribable, observable } from '@trpc/server/observable';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { createWindowHandler } from '../src/adapter';
 import { popupLink, windowLink } from '../src/link';
@@ -36,7 +36,7 @@ const appRouter = t.router({
 
 type LinkName = 'window' | 'popup';
 function createLink(type: LinkName): {
-  link: TRPCLink<AnyRouter>;
+  link: TRPCLink<AnyTRPCRouter>;
   listenWindow: MinimalWindow;
   postWindow: MinimalWindow;
 } {
@@ -66,7 +66,7 @@ const testCases: Array<{ linkName: LinkName }> = [{ linkName: 'window' }, { link
 describe.each(testCases)('with $linkName link', ({ linkName }) => {
   test('with query', async () => {
     const { link, listenWindow, postWindow } = createLink(linkName);
-    const trpc = createTRPCProxyClient<typeof appRouter>({
+    const trpc = createTRPCClient<typeof appRouter>({
       links: [link],
     });
 
@@ -89,7 +89,7 @@ describe.each(testCases)('with $linkName link', ({ linkName }) => {
 
   test('with mutation', async () => {
     const { link, listenWindow, postWindow } = createLink(linkName);
-    const trpc = createTRPCProxyClient<typeof appRouter>({
+    const trpc = createTRPCClient<typeof appRouter>({
       links: [link],
     });
 
@@ -112,7 +112,7 @@ describe.each(testCases)('with $linkName link', ({ linkName }) => {
 
   test('with subscription', async () => {
     const { link, listenWindow, postWindow } = createLink(linkName);
-    const trpc = createTRPCProxyClient<typeof appRouter>({
+    const trpc = createTRPCClient<typeof appRouter>({
       links: [link],
     });
 

@@ -1,6 +1,7 @@
 import { AnyProcedure, AnyRouter, TRPCError } from '@trpc/server';
 import { Unsubscribable, isObservable } from '@trpc/server/observable';
 import { getErrorShape } from '@trpc/server/shared';
+import type { TRPCRequestInfo } from '@trpc/server/http';
 
 import { TRPC_BROWSER_LOADED_EVENT } from '../shared/constants';
 import { isTRPCRequestWithId } from '../shared/trpcMessage';
@@ -58,7 +59,25 @@ export const createWindowHandler = <TRouter extends AnyRouter>(
     }
     const { method, params, id } = trpc;
 
-    const ctx = await createContext?.({ req: { origin: event.origin }, res: undefined });
+    // Create a minimal TRPCRequestInfo for tRPC v11 compatibility
+    const info: TRPCRequestInfo = {
+      accept: null,
+      type: method as any,
+      isBatchCall: false,
+      calls: [
+        {
+          path: params.path,
+          getRawInput: async () => params.input,
+          result: () => params.input,
+          procedure: null,
+        },
+      ],
+      connectionParams: null,
+      signal: new AbortController().signal,
+      url: null,
+    };
+
+    const ctx = await createContext?.({ req: { origin: event.origin }, res: undefined, info });
     const handleError = (cause: unknown) => {
       const error = getErrorFromUnknown(cause);
 

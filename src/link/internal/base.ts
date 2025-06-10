@@ -1,12 +1,14 @@
 import { OperationResultEnvelope, TRPCClientError, TRPCLink } from '@trpc/client';
 import type { AnyRouter } from '@trpc/server';
 import { observable } from '@trpc/server/observable';
+import type { DataTransformerOptions } from '@trpc/server/unstable-core-do-not-import';
 
 import { isTRPCResponse } from '../../shared/trpcMessage';
 import type { MessengerMethods, TRPCChromeRequest } from '../../types';
 
 export const createBaseLink = <TRouter extends AnyRouter>(
   methods: MessengerMethods,
+  transformer?: DataTransformerOptions,
 ): TRPCLink<TRouter> => {
   return (runtime) => {
     return ({ op }) => {
@@ -16,8 +18,18 @@ export const createBaseLink = <TRouter extends AnyRouter>(
         const { id, type, path } = op;
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const input = runtime.transformer.serialize(op.input);
+          // In tRPC v11, transformers are handled in links
+          // Handle both CombinedDataTransformer and simple DataTransformer
+          let input = op.input;
+          if (transformer) {
+            if ('input' in transformer) {
+              // CombinedDataTransformer
+              input = transformer.input.serialize(op.input);
+            } else {
+              // Simple DataTransformer
+              input = transformer.serialize(op.input);
+            }
+          }
 
           const onDisconnect = () => {
             observer.error(new TRPCClientError('Port disconnected prematurely'));
@@ -35,16 +47,26 @@ export const createBaseLink = <TRouter extends AnyRouter>(
               return observer.error(TRPCClientError.from(trpc));
             }
 
+            let data = trpc.result.data;
+            if (transformer && (!trpc.result.type || trpc.result.type === 'data')) {
+              if ('output' in transformer) {
+                // CombinedDataTransformer
+                data = transformer.output.deserialize(trpc.result.data);
+              } else {
+                // Simple DataTransformer
+                data = transformer.deserialize(trpc.result.data);
+              }
+            }
+
             observer.next({
               result: {
                 ...trpc.result,
                 ...((!trpc.result.type || trpc.result.type === 'data') && {
                   type: 'data',
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  data: runtime.transformer.deserialize(trpc.result.data),
+                  data,
                 }),
               },
-            } as OperationResultEnvelope<TRouter>);
+            } as OperationResultEnvelope<unknown, TRPCClientError<TRouter>>);
 
             if (type !== 'subscription' || trpc.result.type === 'stopped') {
               observer.complete();
@@ -59,7 +81,7 @@ export const createBaseLink = <TRouter extends AnyRouter>(
               id,
               jsonrpc: undefined,
               method: type,
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              // In tRPC v11, transformers are handled in links
               params: { path, input },
             },
           } as TRPCChromeRequest);

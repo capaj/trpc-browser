@@ -3,7 +3,7 @@ import { MockChrome, getMockChrome, getMockWindow } from './__setup';
 import { TRPCLink, createTRPCProxyClient } from '@trpc/client';
 import { AnyRouter, initTRPC } from '@trpc/server';
 import { Unsubscribable, observable } from '@trpc/server/observable';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { createChromeHandler } from '../src/adapter';
 import { chromeLink, windowLink } from '../src/link';

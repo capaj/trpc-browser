@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import { observable } from '@trpc/server/observable';
 import SuperJSON from 'superjson';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { createChromeHandler } from '../../../adapter';
 

@@ -1,6 +1,7 @@
-import { AnyProcedure, AnyRouter, TRPCError } from '@trpc/server';
+import { AnyTRPCProcedure, AnyTRPCRouter, TRPCError } from '@trpc/server';
 import { Unsubscribable, isObservable } from '@trpc/server/observable';
-import { getErrorShape } from '@trpc/server/shared';
+import { getErrorShape } from '@trpc/server';
+import type { TRPCRequestInfo } from '@trpc/server/http';
 
 import { isTRPCRequestWithId } from '../shared/trpcMessage';
 import type { TRPCChromeResponse } from '../types';
@@ -16,7 +17,7 @@ type ChromeOptions = {
 };
 type ChromeContextOptions = { req: chrome.runtime.Port; res: undefined };
 
-export const createChromeHandler = <TRouter extends AnyRouter>(
+export const createChromeHandler = <TRouter extends AnyTRPCRouter>(
   opts: CreateHandlerOptions<TRouter, ChromeContextOptions, ChromeOptions>,
 ) => {
   const { router, createContext, onError, chrome = global.chrome } = opts;
@@ -52,7 +53,25 @@ export const createChromeHandler = <TRouter extends AnyRouter>(
       }
       const { method, params, id } = trpc;
 
-      const ctx = await createContext?.({ req: port, res: undefined });
+      // Create a minimal TRPCRequestInfo for tRPC v11 compatibility
+      const info: TRPCRequestInfo = {
+        accept: null,
+        type: method as any,
+        isBatchCall: false,
+        calls: [
+          {
+            path: params.path,
+            getRawInput: async () => params.input,
+            result: () => params.input,
+            procedure: null, // a transport layer that doesn't have direct access to the procedure definitions - we only resolve them dynamically when actually calling the router.
+          },
+        ],
+        connectionParams: null,
+        signal: new AbortController().signal,
+        url: null,
+      };
+
+      const ctx = await createContext?.({ req: port, res: undefined, info });
       const handleError = (cause: unknown) => {
         const error = getErrorFromUnknown(cause);
 
@@ -86,7 +105,7 @@ export const createChromeHandler = <TRouter extends AnyRouter>(
         const procedureFn = trpc.params.path
           .split('.')
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
-          .reduce((acc, segment) => acc[segment], caller as any) as AnyProcedure;
+          .reduce((acc, segment) => acc[segment], caller as any) as AnyTRPCProcedure;
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const result = await procedureFn(input);

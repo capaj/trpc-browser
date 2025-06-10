@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { createWindowHandler } from '../../../adapter/window';
 import { useMessagesStore } from './components/MessageList';

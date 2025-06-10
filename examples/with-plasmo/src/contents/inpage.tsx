@@ -13,8 +13,7 @@ export const config: PlasmoCSConfig = {
 };
 
 const windowClient = createTRPCProxyClient<AppRouter>({
-  transformer: SuperJSON,
-  links: [/* 👉 */ windowLink({ window })],
+  links: [/* 👉 */ windowLink({ window, transformer: SuperJSON })],
 });
 
 const ExtensionInpageUi: FC = () => {

@@ -1,5 +1,6 @@
 import type { TRPCLink } from '@trpc/client';
 import type { AnyRouter } from '@trpc/server';
+import type { DataTransformerOptions } from '@trpc/server/unstable-core-do-not-import';
 
 import type { MinimalWindow, TRPCChromeMessage } from '../types';
 import { createBaseLink } from './internal/base';
@@ -8,6 +9,7 @@ export type WindowLinkOptions = {
   window: MinimalWindow;
   postWindow?: MinimalWindow;
   postOrigin?: string;
+  transformer?: DataTransformerOptions;
 };
 
 export const windowLink = <TRouter extends AnyRouter>(
@@ -33,30 +35,33 @@ export const windowLink = <TRouter extends AnyRouter>(
     }
   };
 
-  return createBaseLink({
-    postMessage(message) {
-      postWindow.postMessage(message, {
-        targetOrigin: opts.postOrigin,
-      });
+  return createBaseLink(
+    {
+      postMessage(message) {
+        postWindow.postMessage(message, {
+          targetOrigin: opts.postOrigin,
+        });
+      },
+      addMessageListener(listener) {
+        const handler = (ev: MessageEvent<TRPCChromeMessage>) => {
+          listener(ev.data);
+        };
+        handlerMap.set(listener, handler);
+        safeEventListener('add', 'message', handler);
+      },
+      removeMessageListener(listener) {
+        const handler = handlerMap.get(listener);
+        if (handler) {
+          safeEventListener('remove', 'message', handler);
+        }
+      },
+      addCloseListener(listener) {
+        safeEventListener('add', 'beforeunload', listener);
+      },
+      removeCloseListener(listener) {
+        safeEventListener('remove', 'beforeunload', listener);
+      },
     },
-    addMessageListener(listener) {
-      const handler = (ev: MessageEvent<TRPCChromeMessage>) => {
-        listener(ev.data);
-      };
-      handlerMap.set(listener, handler);
-      safeEventListener('add', 'message', handler);
-    },
-    removeMessageListener(listener) {
-      const handler = handlerMap.get(listener);
-      if (handler) {
-        safeEventListener('remove', 'message', handler);
-      }
-    },
-    addCloseListener(listener) {
-      safeEventListener('add', 'beforeunload', listener);
-    },
-    removeCloseListener(listener) {
-      safeEventListener('remove', 'beforeunload', listener);
-    },
-  });
+    opts.transformer,
+  );
 };
