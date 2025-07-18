@@ -38,7 +38,8 @@
   "scripts": {
     "test": "vitest run",
     "prepublish": "pnpm run build",
-    "build": "rimraf dist && rimraf adapter && rimraf link && rimraf types && rimraf relay && rimraf shared && tsc -p tsconfig.build.json && mv dist/* . && rimraf dist"
+    "build": "rimraf dist && rimraf adapter && rimraf link && rimraf types && rimraf relay && rimraf shared && tsc -p tsconfig.build.json && mv dist/* . && rimraf dist",
+    "lint": "oxlint"
   },
   "peerDependencies": {
     "@trpc/client": "^11",
@@ -48,13 +49,8 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/chrome": "^0.1.1",
     "@types/node": "^24.0.14",
-    "@typescript-eslint/eslint-plugin": "^8.37.0",
-    "@typescript-eslint/parser": "^8.37.0",
-    "eslint": "^9.31.0",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.1",
-    "eslint-plugin-promise": "^7.2.1",
+    "jsdom": "^26.1.0",
+    "oxlint": "^1.7.0",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "superjson": "^2.2.2",
@@ -62,7 +58,6 @@
     "typescript": "^5.8.3",
     "vite": "^7.0.5",
     "vitest": "^3.2.4",
-    "jsdom": "^26.1.0",
     "zod": "^4.0.5"
   }
 }

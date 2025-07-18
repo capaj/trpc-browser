@@ -10,7 +10,7 @@ export const createBaseLink = <TRouter extends AnyRouter>(
   methods: MessengerMethods,
   transformer?: DataTransformerOptions,
 ): TRPCLink<TRouter> => {
-  return (runtime) => {
+  return (_runtime) => {
     return ({ op }) => {
       return observable((observer) => {
         const listeners: (() => void)[] = [];
