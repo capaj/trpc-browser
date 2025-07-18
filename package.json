@@ -1,6 +1,6 @@
 {
   "name": "@capaj/trpc-browser",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "tRPC adapter for Web Extensions",
   "authors": [
     "James Berry <jb@jamesbe.com>",
@@ -28,6 +28,45 @@
     "browser"
   ],
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./types/index.js"
+    },
+    "./adapter": {
+      "types": "./adapter/index.d.ts",
+      "default": "./adapter/index.js"
+    },
+    "./adapter/*": {
+      "types": "./adapter/*.d.ts",
+      "default": "./adapter/*.js"
+    },
+    "./link": {
+      "types": "./link/index.d.ts",
+      "default": "./link/index.js"
+    },
+    "./link/*": {
+      "types": "./link/*.d.ts",
+      "default": "./link/*.js"
+    },
+    "./link/internal/*": {
+      "types": "./link/internal/*.d.ts",
+      "default": "./link/internal/*.js"
+    },
+    "./relay": {
+      "types": "./relay/index.d.ts",
+      "default": "./relay/index.js"
+    },
+    "./shared/*": {
+      "types": "./shared/*.d.ts",
+      "default": "./shared/*.js"
+    },
+    "./types": {
+      "types": "./types/index.d.ts",
+      "default": "./types/index.js"
+    }
+  },
+  "types": "types/index.d.ts",
   "homepage": "https://github.com/capaj/trpc-browser",
   "repository": "github:capaj/trpc-browser",
   "bugs": "https://github.com/capaj/trpc-browser/issues",
