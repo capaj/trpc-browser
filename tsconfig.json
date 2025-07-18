@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noEmit": true,
     "target": "ES2017",
-    "module": "commonjs",
+    "module": "ESNext",
     "strict": true,
     "declaration": true,
     "declarationMap": true,
@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "removeComments": false,
     "noUncheckedIndexedAccess": true
