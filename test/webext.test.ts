@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import { MockChrome, getMockChrome, getMockWindow } from './__setup';
 
 import { TRPCLink, createTRPCProxyClient } from '@trpc/client';
@@ -127,11 +128,11 @@ describe.each(testCases)('with $linkName link', ({ linkName }) => {
       links: [link],
     });
 
-    const onDataMock = jest.fn();
-    const onCompleteMock = jest.fn();
-    const onErrorMock = jest.fn();
-    const onStartedMock = jest.fn();
-    const onStoppedMock = jest.fn();
+    const onDataMock = vi.fn();
+    const onCompleteMock = vi.fn();
+    const onErrorMock = vi.fn();
+    const onStartedMock = vi.fn();
+    const onStoppedMock = vi.fn();
     const subscription = await new Promise<Unsubscribable>((resolve) => {
       const subscription = trpc.echoSubscription.subscribe(
         { payload: 'subscription1' },

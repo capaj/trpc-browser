@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { retry, wait } from '../src/shared/retry';
 
 describe('retry function', () => {
@@ -25,7 +26,7 @@ describe('retry function', () => {
     const fn = () => {
       throw new Error('Error');
     };
-    const waitFn = jest.fn(wait);
+    const waitFn = vi.fn(wait);
     await expect(retry(fn, 3, waitFn)).rejects.toThrow('Error');
     expect(waitFn).toHaveBeenCalledTimes(3);
     expect(waitFn).toHaveBeenNthCalledWith(1, 1);

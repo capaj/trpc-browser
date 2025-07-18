@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { getMockChrome, getMockWindow } from './__setup';
 
 import { relay } from '../src/relay';

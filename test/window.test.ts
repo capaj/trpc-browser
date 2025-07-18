@@ -1,3 +1,4 @@
+import { describe, expect, test, vi } from 'vitest';
 import { getMockWindow } from './__setup';
 
 import { TRPCLink, createTRPCClient } from '@trpc/client';
@@ -119,11 +120,11 @@ describe.each(testCases)('with $linkName link', ({ linkName }) => {
     // background
     createWindowHandler({ router: appRouter, window: listenWindow, postWindow });
 
-    const onDataMock = jest.fn();
-    const onCompleteMock = jest.fn();
-    const onErrorMock = jest.fn();
-    const onStartedMock = jest.fn();
-    const onStoppedMock = jest.fn();
+    const onDataMock = vi.fn();
+    const onCompleteMock = vi.fn();
+    const onErrorMock = vi.fn();
+    const onStartedMock = vi.fn();
+    const onStoppedMock = vi.fn();
     const subscription = await new Promise<Unsubscribable>((resolve) => {
       const subscription = trpc.echoSubscription.subscribe(
         { payload: 'subscription1' },

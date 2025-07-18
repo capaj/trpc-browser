@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import { vi } from 'vitest';
 import type { MinimalPopupWindow, MinimalWindow } from '../src/types';
 
 type OnMessageListener = (message: any) => void;
@@ -13,20 +14,20 @@ export interface MockChrome extends ChromeType {
   __handlerPort: chrome.runtime.Port;
 }
 
-export const getMockChrome: () => MockChrome = jest.fn(() => {
+export const getMockChrome: () => MockChrome = vi.fn(() => {
   const linkPortOnMessageListeners: OnMessageListener[] = [];
   const handlerPortOnMessageListeners: OnMessageListener[] = [];
   const handlerPortOnConnectListeners: OnConnectListener[] = [];
 
   const handlerPort = {
-    postMessage: jest.fn((message) => {
+    postMessage: vi.fn((message) => {
       linkPortOnMessageListeners.forEach((listener) => listener(message));
     }),
     onMessage: {
-      addListener: jest.fn((listener) => {
+      addListener: vi.fn((listener) => {
         handlerPortOnMessageListeners.push(listener);
       }),
-      removeListener: jest.fn((listener) => {
+      removeListener: vi.fn((listener) => {
         const index = handlerPortOnMessageListeners.indexOf(listener);
         if (index > -1) {
           handlerPortOnMessageListeners.splice(index, 1);
@@ -34,24 +35,24 @@ export const getMockChrome: () => MockChrome = jest.fn(() => {
       }),
     },
     onDisconnect: {
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
     },
   };
 
   return {
     __handlerPort: handlerPort,
     runtime: {
-      connect: jest.fn(() => {
+      connect: vi.fn(() => {
         const linkPort = {
-          postMessage: jest.fn((message) => {
+          postMessage: vi.fn((message) => {
             handlerPortOnMessageListeners.forEach((listener) => listener(message));
           }),
           onMessage: {
-            addListener: jest.fn((listener) => {
+            addListener: vi.fn((listener) => {
               linkPortOnMessageListeners.push(listener);
             }),
-            removeListener: jest.fn((listener) => {
+            removeListener: vi.fn((listener) => {
               const index = linkPortOnMessageListeners.indexOf(listener);
               if (index > -1) {
                 linkPortOnMessageListeners.splice(index, 1);
@@ -59,8 +60,8 @@ export const getMockChrome: () => MockChrome = jest.fn(() => {
             }),
           },
           onDisconnect: {
-            addListener: jest.fn(),
-            removeListener: jest.fn(),
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
           },
         };
 
@@ -69,7 +70,7 @@ export const getMockChrome: () => MockChrome = jest.fn(() => {
         return linkPort;
       }),
       onConnect: {
-        addListener: jest.fn((listener) => {
+        addListener: vi.fn((listener) => {
           handlerPortOnConnectListeners.push(listener);
         }),
       },
@@ -82,7 +83,7 @@ export const getMockWindow = (postTo?: MinimalWindow): MinimalPopupWindow & Mini
 
   return {
     closed: false,
-    addEventListener: jest.fn((event, listener: EventListener) => {
+    addEventListener: vi.fn((event, listener: EventListener) => {
       if (event === 'load') {
         setTimeout(() => {
           listener({} as any);
@@ -91,14 +92,14 @@ export const getMockWindow = (postTo?: MinimalWindow): MinimalPopupWindow & Mini
       if (event !== 'message') return;
       listeners.push(listener);
     }),
-    removeEventListener: jest.fn((event, listener: EventListener) => {
+    removeEventListener: vi.fn((event, listener: EventListener) => {
       if (event !== 'message') return;
       const index = listeners.indexOf(listener);
       if (index > -1) {
         listeners.splice(index, 1);
       }
     }),
-    postMessage: jest.fn((message) => {
+    postMessage: vi.fn((message) => {
       listeners.forEach((listener) => listener({ data: message } as MessageEvent));
       postTo?.postMessage(message);
     }),
