@@ -27,7 +27,7 @@
 - [📔 Requirements](#-requirements)
 - [📝 Example](#-example)
 - [🆎 Types](#-types)
-  - [ChromeLinkOptions](#chromelinkoptions)
+    - [ChromeLinkOptions](#chromelinkoptions)
   - [WindowLinkOptions](#windowlinkoptions)
   - [PopupLinkOptions](#popuplinkoptions)
   - [CreateChromeHandlerOptions](#createchromehandleroptions)
@@ -221,7 +221,7 @@ Please see [full typings here](src/adapter/chrome.ts).
 | `router`        | `Router`   | Your application tRPC router.                          | `true`   |
 | `createContext` | `Function` | Passes contextual (`ctx`) data to procedure resolvers. | `false`  |
 | `onError`       | `Function` | Called if error occurs inside handler.                 | `false`  |
-| `chrome`        | `Object`   | Chrome API object. (default: `global.chrome`)          | `false`  |
+| `chrome`        | `Object`   | Chrome API object. (default: `globalThis.chrome`)          | `false`  |
 
 ### CreateWindowHandlerOptions
 

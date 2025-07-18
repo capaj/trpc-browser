@@ -20,7 +20,7 @@ type ChromeContextOptions = { req: chrome.runtime.Port; res: undefined };
 export const createChromeHandler = <TRouter extends AnyTRPCRouter>(
   opts: CreateHandlerOptions<TRouter, ChromeContextOptions, ChromeOptions>,
 ) => {
-  const { router, createContext, onError, chrome = global.chrome } = opts;
+  const { router, createContext, onError, chrome = globalThis.chrome } = opts;
   if (!chrome) {
     console.warn("Skipping chrome handler creation: 'opts.chrome' not defined");
     return;

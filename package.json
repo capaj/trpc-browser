@@ -1,6 +1,6 @@
 {
   "name": "@capaj/trpc-browser",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "tRPC adapter for Web Extensions",
   "authors": [
     "James Berry <jb@jamesbe.com>",
