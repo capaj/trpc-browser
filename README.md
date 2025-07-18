@@ -2,7 +2,7 @@
 
 <div align="center">
   <h1>trpc-browser</h1>
-  <a href="https://www.npmjs.com/package/trpc-browser"><img src="https://img.shields.io/npm/v/trpc-browser.svg?style=flat&color=brightgreen" target="_blank" /></a>
+  <a href="https://www.npmjs.com/package/@capaj/trpc-browser"><img src="https://img.shields.io/npm/v/@capaj/trpc-browser.svg?style=flat&color=brightgreen" target="_blank" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-black" /></a>
   <a href="https://trpc.io/discord" target="_blank"><img src="https://img.shields.io/badge/chat-discord-blue.svg" /></a>
   <br />
@@ -13,10 +13,9 @@
 
 - Easy communication for web extensions.
 - Typesafe messaging between content & background scripts.
-- between window, any other window (eg iframe) or popups 
+- between window, any other window (eg iframe) or popups
 - Ready for Manifest V3.
 - forked because of lack of maintenance on the original repo
-  
 
 ## 📖 Table of contents
 
@@ -28,7 +27,7 @@
 - [📔 Requirements](#-requirements)
 - [📝 Example](#-example)
 - [🆎 Types](#-types)
-    - [ChromeLinkOptions](#chromelinkoptions)
+  - [ChromeLinkOptions](#chromelinkoptions)
   - [WindowLinkOptions](#windowlinkoptions)
   - [PopupLinkOptions](#popuplinkoptions)
   - [CreateChromeHandlerOptions](#createchromehandleroptions)
@@ -247,9 +246,8 @@ When posting from a link you can specify the `postOrigin` option. This will be p
 
 Distributed under the MIT License. See LICENSE for more information.
 
-
 ## Used by:
 
 Projects which used this package(add your own if you use this):
 
- - https://github.com/authier-pm/authier
+- https://github.com/authier-pm/authier
